@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>One Little Question ❤️</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#4b2532;background:linear-gradient(145deg,#fff8fa,#ffe5ee,#fff4f7);overflow-x:hidden}
+.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{width:min(94vw,460px);padding:28px 23px;background:rgba(255,255,255,.95);border-radius:30px;text-align:center;box-shadow:0 22px 65px rgba(112,43,69,.12)}
+.hidden{display:none!important}
+.eyebrow{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#bd6680;font-weight:800}
+.heart{font-size:56px;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{transform:scale(1.1)}}
+h1{font-size:30px;line-height:1.2;margin:12px 0 8px}
+p{line-height:1.6;color:#795766}
+.photo{width:100%;height:230px;object-fit:cover;border-radius:22px;margin:8px 0 12px}
+.memory{width:100%;height:150px;object-fit:cover;border-radius:18px;margin:8px 0 10px}
+.buttons{height:130px;position:relative;margin-top:12px}
+button{border:0;border-radius:999px;padding:14px 24px;font-size:16px;font-weight:800;font-family:inherit}
+.yes{position:absolute;left:50%;transform:translateX(-105%);background:#ff5c86;color:white;box-shadow:0 10px 25px rgba(255,92,134,.27)}
+.no{position:absolute;left:55%;top:0;background:#eee9ed;color:#655b60}
+.field{width:100%;border:1px solid #efc9d5;border-radius:15px;padding:13px;margin:6px 0;font:inherit;background:white}
+textarea{min-height:105px;resize:vertical}
+.submit{width:100%;margin-top:10px;background:#ff5c86;color:white}
+.small{font-size:12px;color:#a27d89}
+.final{width:100%;height:270px;object-fit:cover;border-radius:22px}
+.line{font-size:22px;font-weight:800;margin-top:10px}
+.float{position:fixed;top:-30px;z-index:5;animation:fall linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:0}}
+.sound{position:fixed;right:14px;top:14px;z-index:10;width:44px;height:44px;padding:0;background:#fff;box-shadow:0 8px 20px rgba(112,43,69,.13)}
+</style>
+</head>
+<body>
+<button class="sound" id="sound">🔈</button>
+
+<div class="screen" id="s1"><div class="card">
+<div class="eyebrow">A little something for you</div>
+<div class="heart">❤️</div>
+<img class="photo" src="photo1.jpeg" alt="A memory">
+<h1>Hey Mumiii...</h1>
+<p>I have something important to ask you.</p>
+<p><strong>Will you go on a date with me? Please 🥺</strong></p>
+<div class="buttons" id="area">
+<button class="yes" id="yes">YES ❤️</button>
+<button class="no" id="no">NO 🙈</button>
+</div>
+<div class="small">No pressure. Just choose what you genuinely want. 🤍</div>
+</div></div>
+
+<div class="screen hidden" id="s2"><div class="card">
+<div class="eyebrow">Okay... you said yes 😭</div>
+<h1>Let's make it a date.</h1>
+<p>Pick whatever feels good to you. And there's a little box for anything you want to tell me. 💌</p>
+<img class="memory" src="photo2.jpeg" alt="A memory">
+<input class="field" id="date" type="date">
+<input class="field" id="time" type="time">
+<input class="field" id="place" placeholder="Where should we go? 📍">
+<textarea class="field" id="anything" placeholder="Anything you want to tell me... (optional)"></textarea>
+<button class="submit" id="confirm">Save our little plan 💕</button>
+<div class="small">You can leave anything blank if you'd rather decide together.</div>
+</div></div>
+
+<div class="screen hidden" id="s3"><div class="card">
+<div class="eyebrow">Officially a date</div>
+<img class="final" src="photo3.jpeg" alt="A memory">
+<div class="line">Thank you.</div>
+<div class="line hidden" id="line2">For your existence. ❤️</div>
+<div id="summary"></div>
+<p>— Nishan</p>
+</div></div>
+
+<script>
+const area=document.getElementById("area"),no=document.getElementById("no");
+let tries=0,noFree=true;
+const labels=["NO 🙈","Are you sure? 😭","Really? 🥺","Think again 😭","Okay okay 😭","You can say no 🤍"];
+
+function move(){
+ if(!noFree)return;
+ tries++;
+ no.textContent=labels[Math.min(tries,labels.length-1)];
+ if(tries>=5){
+   noFree=false;
+   no.style.left="55%";no.style.top="45px";
+   no.textContent="NO 🤍";
+   no.onclick=()=>alert("Okay, Mumiii. I respect your answer. 🤍");
+   no.onmouseenter=null;
+   return;
+ }
+ const x=Math.random()*Math.max(1,area.clientWidth-no.offsetWidth);
+ const y=Math.random()*Math.max(1,area.clientHeight-no.offsetHeight);
+ no.style.left=x+"px";no.style.top=y+"px";pop("😂");
+}
+no.onmouseenter=move;
+no.ontouchstart=e=>{e.preventDefault();move()};
+
+const s1El=document.getElementById("s1");
+const s2El=document.getElementById("s2");
+const s3El=document.getElementById("s3");
+const yesEl=document.getElementById("yes");
+const confirmEl=document.getElementById("confirm");
+const dateEl=document.getElementById("date");
+const timeEl=document.getElementById("time");
+const placeEl=document.getElementById("place");
+const anythingEl=document.getElementById("anything");
+const summaryEl=document.getElementById("summary");
+const line2El=document.getElementById("line2");
+const soundEl=document.getElementById("sound");
+
+yesEl.addEventListener("click",()=>{
+ s1El.classList.add("hidden");
+ s2El.classList.remove("hidden");
+ pop("❤️");
+ beep(660);
+});
+
+confirmEl.addEventListener("click",()=>{
+ const d=dateEl.value;
+ const t=timeEl.value;
+ const p=placeEl.value.trim();
+ const a=anythingEl.value.trim();
+ const dt=d?new Date(d+"T00:00:00").toLocaleDateString(undefined,{weekday:"long",year:"numeric",month:"long",day:"numeric"}):"We'll decide together ❤️";
+ summaryEl.innerHTML='<div style="background:#fff1f5;border-radius:17px;padding:14px;margin-top:14px;line-height:1.8">📅 '+esc(dt)+'<br>🕐 '+esc(t||"We'll decide together")+'<br>📍 '+esc(p||"Somewhere nice")+(a?'<br>💌 '+esc(a):"")+'</div>';
+ s2El.classList.add("hidden");
+ s3El.classList.remove("hidden");
+ pop("💖");
+ beep(880);
+ setTimeout(()=>line2El.classList.remove("hidden"),2300);
+});
+
+soundEl.addEventListener("click",()=>{
+ beep(523);
+ setTimeout(()=>beep(659),100);
+ setTimeout(()=>beep(784),200);
+ soundEl.textContent="🔊";
+});
+
+function esc(x){return x.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function pop(x){
+ for(let i=0;i<14;i++){
+  let e=document.createElement("div");e.className="float";e.textContent=x;
+  e.style.left=Math.random()*100+"vw";e.style.fontSize=15+Math.random()*14+"px";
+  e.style.animationDuration=2+Math.random()*2+"s";document.body.appendChild(e);
+  setTimeout(()=>e.remove(),4500);
+ }
+}
+function beep(f){
+ try{
+  let C=window.AudioContext||window.webkitAudioContext,c=new C,o=c.createOscillator(),g=c.createGain();
+  o.frequency.value=f;g.gain.value=.05;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.1);
+ }catch(e){}
+}
+;
+</script>
+</body>
+</html>
